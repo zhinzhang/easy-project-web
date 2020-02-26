@@ -20,6 +20,24 @@
       <div>
         <button @click="clickHideHud">HUD隐藏</button>
       </div>
+      <div>
+        <button @click="clickDownload">下载文件</button>
+      </div>
+      <div>
+        <button @click="clickScan">扫描二维码</button>
+      </div>
+      <div>
+        <button @click="clickCopy">复制内容</button>
+      </div>
+      <div>
+        <button @click="clickGetCopy">获取复制内容</button>
+      </div>
+      <div>
+        <button @click="clickCall">打电话</button>
+      </div>
+      <div>
+        <button @click="clcikGetAppInfo">获取APP详细信息</button>
+      </div>
     </div>
   </div>
 </template>
@@ -53,13 +71,6 @@ export default {
         }
       };
       this.postMessageFunction(data);
-    },
-    returnAppStorage(key, value) {
-      console.log(value);
-
-      let student = JSON.parse(value);
-      alert(student.name);
-      this.name = student.name;
     },
     clickShowAlert() {
       let data = {
@@ -124,18 +135,65 @@ export default {
       };
       this.postMessageFunction(data);
     },
+    clickDownload() {
+      let data = {
+        method: "downloadFile",
+        param: {
+          message: "视频下载中",
+          file_url:
+            "http://dsn-prod.oss-cn-shenzhen.aliyuncs.com/material_videos/5d5519cd5c82620c10a02c75/5d5519cd5c82620c10a02c75-1581148080732.mp4",
+          file_type: "mp4"
+        }
+      };
+      this.postMessageFunction(data);
+    },
+    clickScan() {
+      let data = {
+        method: "scanQrCode"
+      };
+      this.postMessageFunction(data);
+    },
+    clickCopy() {
+      let data = {
+        method: "setPasteboard",
+        param: {
+          value: "这是需要复制的内容"
+        }
+      };
+      this.postMessageFunction(data);
+    },
+    clickGetCopy() {
+      let data = {
+        method: "getPasteboard"
+      };
+      this.postMessageFunction(data);
+    },
+    clickCall() {
+      let data = {
+        method: "makePhoneCall",
+        param: {
+          phone: "10086"
+        }
+      };
+      this.postMessageFunction(data);
+    },
+    clcikGetAppInfo() {
+      let data = {
+        method: "getAppDetailInfo"
+      };
+      this.postMessageFunction(data);
+    },
+    appBlockData(data) {
+      alert(data);
+    },
     postMessageFunction(data) {
       window.webkit.messageHandlers.callAppMethod.postMessage(
         JSON.stringify(data)
       );
-    },
-    alertType(params) {
-      console.log(params);
     }
   },
   mounted() {
-    window.alertType = this.alertType;
-    window.returnAppStorage = this.returnAppStorage;
+    window.appBlockData = this.appBlockData;
   }
 };
 </script>
